@@ -1,0 +1,69 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://director:director@db:5432/director_db
+      - REDIS_URL=redis://:director@cache:6379/0
+      - SECRET_KEY=dev-secret-key-change-in-prod-32chars!!
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=60
+      - REFRESH_TOKEN_EXPIRE_DAYS=30
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-dummy}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-dummy}
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID:-dummy}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET:-dummy}
+      - FRONTEND_URL=http://localhost:5173
+      - ENVIRONMENT=development
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+    networks:
+      - director_dev
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_DB=director_db
+      - POSTGRES_USER=director
+      - POSTGRES_PASSWORD=director
+    volumes:
+      - postgres_dev:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U director -d director_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - director_dev
+
+  cache:
+    image: redis:7-alpine
+    command: redis-server --requirepass director
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "director", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - director_dev
+
+volumes:
+  postgres_dev:
+
+networks:
+  director_dev:
+    driver: bridge
