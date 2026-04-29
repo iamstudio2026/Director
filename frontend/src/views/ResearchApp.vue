@@ -1,3 +1,7 @@
+<template>
+  <div class="app-layout">
+    <AppHeader @toggle-sidebar="sidebarOpen = !sidebarOpen" />
+    
     <AppSidebar 
       class="app-sidebar" 
       :class="{ 'open': sidebarOpen }" 
@@ -9,11 +13,6 @@
       class="sidebar-overlay" 
       @click="sidebarOpen = false"
     ></div>
-
-    <AppSidebar 
-      class="app-sidebar" 
-      :class="{ 'open': sidebarOpen }" 
-    />
     
     <main class="app-content">
       <div v-if="projectStore.loading" class="loading-state">

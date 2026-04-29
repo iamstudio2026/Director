@@ -1,7 +1,7 @@
 export interface ModuleField {
   id: string
   label: string
-  type: 'textarea' | 'text' | 'select' | 'info'
+  type: 'textarea' | 'text' | 'select' | 'info' | 'number'
   placeholder?: string
   options?: { value: string, label: string }[]
   rows?: number
@@ -594,7 +594,19 @@ ENTREGABLE: tabla SUMMARY OF FINDINGS en Markdown y párrafo narrativo.`,
       subtitle: "Egger/Begg/Deeks.",
       icon: "⚖️",
       fields: [
-        { id: "test", label: "Test a utilizar", type: "select", options: ["Egger", "Begg-Mazumdar", "Deeks (Dx)", "Trim-and-fill", "PET-PEESE", "Combinado"] }
+        { 
+          id: "test", 
+          label: "Test a utilizar", 
+          type: "select", 
+          options: [
+            {value: "Egger", label: "Egger"}, 
+            {value: "Begg-Mazumdar", label: "Begg-Mazumdar"}, 
+            {value: "Deeks (Dx)", label: "Deeks (Dx)"}, 
+            {value: "Trim-and-fill", label: "Trim-and-fill"}, 
+            {value: "PET-PEESE", label: "PET-PEESE"}, 
+            {value: "Combinado", label: "Combinado"}
+          ] 
+        }
       ],
       tplMax: `ROL: Bioestadístico de sesgo de publicación.
 TAREA: PLAN DE EVALUACIÓN DE SESGO DE PUBLICACIÓN con el test {test}.
@@ -653,7 +665,17 @@ TAREA: Redactar RESUMEN (250–300 palabras) y ABSTRACT (250–300) ESTRUCTURADO
       subtitle: "Estilo Vancouver/APA.",
       icon: "📚",
       fields: [
-        { id: "estilo", label: "Estilo", type: "select", options: ["Vancouver", "ISO 690-2", "Harvard", "APA 7"] }
+        { 
+          id: "estilo", 
+          label: "Estilo", 
+          type: "select", 
+          options: [
+            {value: "Vancouver", label: "Vancouver"}, 
+            {value: "ISO 690-2", label: "ISO 690-2"}, 
+            {value: "Harvard", label: "Harvard"}, 
+            {value: "APA 7", label: "APA 7"}
+          ] 
+        }
       ],
       tplMax: `ROL: Editor bibliográfico.
 TAREA: Generar la BIBLIOGRAFÍA del estudio en estilo {estilo}, listada SOLO con las fuentes citadas en el manuscrito.`,
