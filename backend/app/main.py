@@ -22,6 +22,9 @@ logger = structlog.get_logger()
 async def lifespan(app: FastAPI):
     """Startup and shutdown events"""
     logger.info("director_startup", version="1.0.0", env=settings.ENVIRONMENT)
+    # Crear tablas en la base de datos si no existen (reemplazo de alembic)
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
     yield
     logger.info("director_shutdown")
 
