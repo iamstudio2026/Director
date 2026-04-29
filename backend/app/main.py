@@ -11,6 +11,7 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from app.core.config import settings
 from app.core.logging import configure_logging
 from app.core.database import engine, Base
+from app.models import models  # Importar modelos para create_all
 from app.routers import auth, projects, state, prompts, refs, admin
 
 # Configure structured logging early
