@@ -27,16 +27,16 @@
         <button class="nav-btn">
           <span class="dot"></span> <span class="icon">🚀</span> <span class="code">DALL</span> Pipeline integrado
         </button>
-        <button class="nav-btn">
+        <button class="nav-btn" :class="{ active: activeModuleId === 'DUM-0' }" @click="$emit('select-module', 'DUM-0')">
           <span class="dot"></span> <span class="icon">❓</span> <span class="code">D0</span> Pregunta (PICO)
         </button>
-        <button class="nav-btn">
-          <span class="dot"></span> <span class="icon">🎯</span> <span class="code">D1</span> Objetivos
+        <button class="nav-btn" :class="{ active: activeModuleId === 'DUM-1' }" @click="$emit('select-module', 'DUM-1')">
+          <span class="dot"></span> <span class="icon">🎯</span> <span class="code">D1</span> Objetivos y Diseño
         </button>
-        <button class="nav-btn">
-          <span class="dot"></span> <span class="icon">🔬</span> <span class="code">D2</span> Diseño
+        <button class="nav-btn" :class="{ active: activeModuleId === 'DUM-2' }" @click="$emit('select-module', 'DUM-2')">
+          <span class="dot"></span> <span class="icon">🔬</span> <span class="code">D2</span> Constructor PICO
         </button>
-        <button class="nav-btn">
+        <button class="nav-btn" :class="{ active: activeModuleId === 'DUM-3' }" @click="$emit('select-module', 'DUM-3')">
           <span class="dot"></span> <span class="icon">📐</span> <span class="code">D3</span> Modalidad
         </button>
       </div>
@@ -100,7 +100,11 @@
 </template>
 
 <script setup lang="ts">
-// Logic for sidebar navigation will go here
+defineProps<{
+  activeModuleId: string | null
+}>()
+
+defineEmits(['select-module'])
 </script>
 
 <style scoped>

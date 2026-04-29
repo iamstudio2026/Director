@@ -1,8 +1,9 @@
-<template>
-  <div class="app-layout">
-    <AppHeader @toggle-sidebar="sidebarOpen = !sidebarOpen" />
-    
-    <!-- Sidebar overlay for mobile -->
+    <AppSidebar 
+      class="app-sidebar" 
+      :class="{ 'open': sidebarOpen }" 
+      :activeModuleId="activeModuleId"
+      @select-module="handleModuleSelect"
+    />
     <div 
       v-if="sidebarOpen" 
       class="sidebar-overlay" 
@@ -41,8 +42,10 @@
           </div>
         </div>
 
-        <!-- Dynamic View Content (Placeholder for modules) -->
-        <div class="module-view card">
+        <!-- Dynamic View Content -->
+        <ModuleRenderer v-if="activeModule" :module="activeModule" />
+        
+        <div v-else class="module-view card">
           <h2 class="view-title">Bienvenido a Director</h2>
           <p class="view-subtitle">El entorno de investigación está listo. Selecciona un módulo en el panel izquierdo para comenzar.</p>
           
@@ -67,18 +70,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useProjectStore } from '@/stores/projects'
+import { useStudyState } from '@/stores/studyState'
+import { useResearchModules } from '@/composables/useResearchModules'
 import AppHeader from '@/components/AppHeader.vue'
 import AppSidebar from '@/components/AppSidebar.vue'
+import ModuleRenderer from '@/components/ModuleRenderer.vue'
 
 const route = useRoute()
 const router = useRouter()
 const projectStore = useProjectStore()
+const studyState = useStudyState()
+const researchModules = useResearchModules()
 
 const sidebarOpen = ref(false)
-const anchorQuestion = ref('') // This will eventually be synced with the study state
+const activeModuleId = ref<string | null>(null)
+
+const activeModule = computed(() => {
+  if (!activeModuleId.value) return null
+  return researchModules.getModuleById(activeModuleId.value) || null
+})
+
+const anchorQuestion = computed(() => studyState.getField('Q'))
+const modality = computed(() => studyState.getField('modality'))
 
 onMounted(async () => {
   const id = route.params.id as string
@@ -88,10 +104,15 @@ onMounted(async () => {
   }
   
   const success = await projectStore.loadProject(id)
-  if (!success) {
-    // Handle error (maybe redirect or show a toast)
+  if (success) {
+    await studyState.loadState(id)
   }
 })
+
+function handleModuleSelect(id: string) {
+  activeModuleId.value = id
+  sidebarOpen.value = false
+}
 
 // Close sidebar on route change (for mobile)
 watch(() => route.fullPath, () => {
