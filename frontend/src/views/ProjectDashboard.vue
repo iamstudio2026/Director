@@ -48,6 +48,23 @@
             <span class="btn btn-ghost btn-sm">Abrir proyecto →</span>
           </div>
         </RouterLink>
+
+        <!-- Tarjeta del proyecto IASIG Citología Estático -->
+        <RouterLink 
+          to="/app/iasig" 
+          class="project-card card"
+          style="border-color: rgba(37, 99, 235, 0.4);"
+        >
+          <div class="pc-top">
+            <span class="badge badge-blue" style="background: rgba(37, 99, 235, 0.2); color: #93c5fd;">Original / Legado</span>
+            <time class="pc-date">Estático</time>
+          </div>
+          <h3 class="pc-title" style="color: #93c5fd;">🔬 IASIG Citología (Local)</h3>
+          <p class="pc-desc">Abre tu proyecto original de Citología con todos los prompts guardados en el navegador local (sin usar la base de datos).</p>
+          <div class="pc-footer">
+            <span class="btn btn-ghost btn-sm" style="color: #93c5fd;">Abrir app estática →</span>
+          </div>
+        </RouterLink>
       </div>
     </main>
 

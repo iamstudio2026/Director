@@ -137,10 +137,10 @@
           <button class="nav-btn" :class="{ active: activeModuleId === 'AP-1' }" @click="$emit('select-module', 'AP-1')"><span class="dot"></span> <span class="code">AP-1</span> Onboarding</button>
           <button class="nav-btn" :class="{ active: activeModuleId === 'AP-2' }" @click="$emit('select-module', 'AP-2')"><span class="dot"></span> <span class="code">AP-2</span> Paleta</button>
           <button class="nav-btn" :class="{ active: activeModuleId === 'PRISMA' }" @click="$emit('select-module', 'PRISMA')"><span class="dot"></span> <span class="code">PR</span> Flujo PRISMA</button>
-          <!-- Enlace externo a IASIG Citología -->
-          <a href="/iasig-citologia.html" target="_blank" class="nav-btn" style="text-decoration: none;">
-            <span class="dot"></span> <span class="icon">🔬</span> <span class="code">IA</span> IASIG Citología ↗
-          </a>
+          <!-- Enlace interno a IASIG Citología embebida -->
+          <RouterLink to="/app/iasig" class="nav-btn" active-class="active" style="text-decoration: none;">
+            <span class="dot"></span> <span class="icon">🔬</span> <span class="code">IA</span> IASIG Citología
+          </RouterLink>
         </div>
 
         <!-- MARCOS Y ROB -->
